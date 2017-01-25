@@ -1,0 +1,30 @@
+#	Author 		: Subir Kumar Padhee, Shrivathsa Murthy
+#  	Date 		: 20/4/16
+#  	Objective 	: script file which transfers hex file from client PC to arduino Yun over Wifi using scp
+					
+# 	 bug reports? write to shmu7023@colorado.edu, supa2799@colorado.edu
+  
+
+
+#winscp.ex# Connect
+open scp://root:password@192.168.0.5/ 
+# Change remote directory
+cd /www/sd/esd/
+# Force binary mode transfer
+option transfer binary
+# Download file to the local directory d:\
+#get client.c d:\
+#upload a file remote directory
+put c:\Keil_v5\C51\Examples\Objects\testUpload.hex /www/sd/esd/
+
+#system calls to configure network settings 
+call ifconfig eth1 192.168.0.5 netmask 255.255.255.0
+call route add default gw 192.168.0.5
+
+#execute client program
+call ./client
+# Disconnect session =
+close
+
+#this will terminate windows prompt
+&& exit

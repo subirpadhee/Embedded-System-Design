@@ -1,0 +1,53 @@
+Name            Lab1SPLD;
+Partno          ATF16LV8C;
+Revision        04;
+Date            2/25/2016;
+Designer        Subir;
+Company         CU;
+Location        None;
+Assembly        None;
+Device          g16v8a; 
+
+/****************************************************************/
+/*                                                              */
+/*      This is part two of lab1                              */
+/*            SPLD                                              */
+/*                                                              */
+/****************************************************************/
+
+/*
+ * Inputs:  define inputs to build simple gates from
+ */
+
+Pin 2 =  PSEN; /* Input PSEN */
+Pin 3 =  A15; /* Input Address bit 15 */
+Pin 4 =  A14; /* Input Address bit 14 */
+Pin 5 =  A13; /* Input Address bit 13 */
+Pin 6 =  A12; /* Input Address bit 12 */
+Pin 7 =  RD;  /* Input RD bar */
+Pin 8 =  WR;  /* Input WR bar */
+Pin 19 = A11; /* Input Address bit 11 */
+Pin 18 = A10; /* Input Address bit 10 */
+/*
+ * Outputs:  define outputs as active HI levels
+ *
+ */
+
+Pin 12 = debugLatchCLK; /* Clock to the debug Latch */
+Pin 13 = CSPERIPH; /* Output CSPERIPH */
+Pin 14 = NVRAMsel;
+Pin 15 = READ; /* Output Read */
+
+
+/*
+ * Logic: 
+ */
+
+CSPERIPH = (A15 & A14 & A13 & A12 & (!WR # !RD)); /* is high only when the most significant nibble of the 2byte address is F. Enables the LCD */
+READ = RD & PSEN; /* goes to OE ov NV SRAM */
+NVRAMsel = A15; /*!(!A15 & (A10 # A11 # A12 # A13 # A14));  Selects the NVRAM when A15 is low AND atleast any one of A10, A11, A12, A13, A14 is High. Chip select is active low, hence the NOT */
+debugLatchCLK= (!WR) & (!A15); /* Clock to the debug Latch */
+
+
+
+
